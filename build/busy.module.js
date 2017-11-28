@@ -6,6 +6,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
+//import {Compiler, COMPILER_OPTIONS, CompilerFactory} from '@angular/core';
 //import {JitCompilerFactory} from '@angular/platform-browser-dynamic';
 var busy_directive_1 = require("./busy.directive");
 var busy_service_1 = require("./busy.service");

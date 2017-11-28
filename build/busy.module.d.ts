@@ -1,3 +1,7 @@
+/**
+ * @file Module: Busy
+ * @author yumao<yuzhang.lille@gmail.com>
+ */
 import { ModuleWithProviders } from '@angular/core';
 import { BusyConfig } from './busy-config';
 export declare class BusyModule {
