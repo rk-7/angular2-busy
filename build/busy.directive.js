@@ -26,6 +26,38 @@ var BusyDirective = /** @class */ (function () {
         this.vcRef = vcRef;
         this.injector = injector;
     }
+    // As ngOnChanges does not work on Object detection, ngDoCheck is using
+    // As ngOnChanges does not work on Object detection, ngDoCheck is using
+    BusyDirective.prototype.ngDoCheck = 
+    // As ngOnChanges does not work on Object detection, ngDoCheck is using
+    function () {
+        var options = this.optionsNorm = this.normalizeOptions(this.options);
+        if (!this.dectectOptionsChange()) {
+            return;
+        }
+        if (this.busyRef) {
+            this.busyRef.instance.message = options.message;
+        }
+        if (!util_1.equals(options.busy, this.tracker.promiseList))
+            this.tracker.reset({
+                promiseList: options.busy,
+                delay: options.delay,
+                minDuration: options.minDuration
+            });
+        if (!this.busyRef
+            || this.template !== options.template
+            || this.backdrop !== options.backdrop) {
+            this.destroyComponents();
+            this.template = options.template;
+            this.backdrop = options.backdrop;
+            if (options.backdrop)
+                this.createBackdrop();
+            this.createBusy();
+        }
+    };
+    BusyDirective.prototype.ngOnDestroy = function () {
+        this.destroyComponents();
+    };
     BusyDirective.prototype.normalizeOptions = function (options) {
         if (!options) {
             options = { busy: null };
@@ -48,40 +80,11 @@ var BusyDirective = /** @class */ (function () {
         this.optionsRecord = this.optionsNorm;
         return true;
     };
-    // As ngOnChanges does not work on Object detection, ngDoCheck is using
-    // As ngOnChanges does not work on Object detection, ngDoCheck is using
-    BusyDirective.prototype.ngDoCheck = 
-    // As ngOnChanges does not work on Object detection, ngDoCheck is using
-    function () {
-        var options = this.optionsNorm = this.normalizeOptions(this.options);
-        if (!this.dectectOptionsChange()) {
-            return;
-        }
-        if (this.busyRef) {
-            this.busyRef.instance.message = options.message;
-        }
-        !util_1.equals(options.busy, this.tracker.promiseList)
-            && this.tracker.reset({
-                promiseList: options.busy,
-                delay: options.delay,
-                minDuration: options.minDuration
-            });
-        if (!this.busyRef
-            || this.template !== options.template
-            || this.backdrop !== options.backdrop) {
-            this.destroyComponents();
-            this.template = options.template;
-            this.backdrop = options.backdrop;
-            options.backdrop && this.createBackdrop();
-            this.createBusy();
-        }
-    };
-    BusyDirective.prototype.ngOnDestroy = function () {
-        this.destroyComponents();
-    };
     BusyDirective.prototype.destroyComponents = function () {
-        this.busyRef && this.busyRef.destroy();
-        this.backdropRef && this.backdropRef.destroy();
+        if (this.busyRef)
+            this.busyRef.destroy();
+        if (this.backdropRef)
+            this.backdropRef.destroy();
     };
     BusyDirective.prototype.createBackdrop = function () {
         var backdropFactory = this.cfResolver.resolveComponentFactory(busy_backdrop_component_1.BusyBackdropComponent);

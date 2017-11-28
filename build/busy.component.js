@@ -14,64 +14,93 @@ var inactiveStyle = animations_1.style({
 var timing = '.3s ease';
 ;
 var BusyComponent = /** @class */ (function () {
-    function BusyComponent(tracker, compiler) {
+    function BusyComponent(tracker
+        //,private compiler: Compiler
+    ) {
         this.tracker = tracker;
-        this.compiler = compiler;
     }
     BusyComponent.prototype.ngDoCheck = function () {
         if (this.message === this.lastMessage) {
             return;
         }
         this.lastMessage = this.message;
-        this.clearDynamicTemplateCache();
-        this.createDynamicTemplate();
+        //this.clearDynamicTemplateCache();
+        //this.createDynamicTemplate();
     };
     BusyComponent.prototype.ngOnDestroy = function () {
-        this.clearDynamicTemplateCache();
+        //this.clearDynamicTemplateCache();
     };
-    BusyComponent.prototype.createDynamicTemplate = function () {
-        var _a = this, template = _a.template, message = _a.message;
-        var TemplateComponent = /** @class */ (function () {
-            function TemplateComponent() {
-                this.message = message;
-            }
-            TemplateComponent.decorators = [
-                { type: core_1.Component, args: [{ template: template },] },
-            ];
-            /** @nocollapse */
-            TemplateComponent.ctorParameters = function () { return []; };
-            return TemplateComponent;
-        }());
-        var TemplateModule = /** @class */ (function () {
-            function TemplateModule() {
-            }
-            TemplateModule.decorators = [
-                { type: core_1.NgModule, args: [{
-                            declarations: [TemplateComponent],
-                            entryComponents: [TemplateComponent]
-                        },] },
-            ];
-            /** @nocollapse */
-            TemplateModule.ctorParameters = function () { return []; };
-            return TemplateModule;
-        }());
-        this.TemplateComponent = TemplateComponent;
-        this.nmf = this.compiler.compileModuleSync(TemplateModule);
-    };
-    BusyComponent.prototype.clearDynamicTemplateCache = function () {
-        if (!this.nmf) {
-            return;
-        }
-        this.compiler.clearCacheFor(this.nmf.moduleType);
-        this.nmf = null;
-    };
-    BusyComponent.prototype.isActive = function () {
+    // createDynamicTemplate() {
+    //     const {template, message} = this;
+    //     @Component({template})
+    //     class TemplateComponent {
+    //         message: string = message;
+    //     }
+    //     @NgModule({
+    //         declarations: [TemplateComponent],
+    //         entryComponents: [TemplateComponent]
+    //     })
+    //     class TemplateModule {}
+    //     this.TemplateComponent = TemplateComponent;
+    //     this.nmf = this.compiler.compileModuleSync(TemplateModule);
+    // }
+    // clearDynamicTemplateCache() {
+    //     if (!this.nmf) {
+    //         return;
+    //     }
+    //     this.compiler.clearCacheFor(this.nmf.moduleType);
+    //     this.nmf = null;
+    // }
+    // createDynamicTemplate() {
+    //     const {template, message} = this;
+    //     @Component({template})
+    //     class TemplateComponent {
+    //         message: string = message;
+    //     }
+    //     @NgModule({
+    //         declarations: [TemplateComponent],
+    //         entryComponents: [TemplateComponent]
+    //     })
+    //     class TemplateModule {}
+    //     this.TemplateComponent = TemplateComponent;
+    //     this.nmf = this.compiler.compileModuleSync(TemplateModule);
+    // }
+    // clearDynamicTemplateCache() {
+    //     if (!this.nmf) {
+    //         return;
+    //     }
+    //     this.compiler.clearCacheFor(this.nmf.moduleType);
+    //     this.nmf = null;
+    // }
+    BusyComponent.prototype.isActive = 
+    // createDynamicTemplate() {
+    //     const {template, message} = this;
+    //     @Component({template})
+    //     class TemplateComponent {
+    //         message: string = message;
+    //     }
+    //     @NgModule({
+    //         declarations: [TemplateComponent],
+    //         entryComponents: [TemplateComponent]
+    //     })
+    //     class TemplateModule {}
+    //     this.TemplateComponent = TemplateComponent;
+    //     this.nmf = this.compiler.compileModuleSync(TemplateModule);
+    // }
+    // clearDynamicTemplateCache() {
+    //     if (!this.nmf) {
+    //         return;
+    //     }
+    //     this.compiler.clearCacheFor(this.nmf.moduleType);
+    //     this.nmf = null;
+    // }
+    function () {
         return this.tracker.isActive();
     };
     BusyComponent.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'ng-busy',
-                    template: "\n        <div [class]=\"wrapperClass\" *ngIf=\"isActive()\" @flyInOut>\n            <ng-container *ngComponentOutlet=\"TemplateComponent; ngModuleFactory: nmf;\"></ng-container>\n        </div>\n    ",
+                    template: "\n        <div [class]=\"wrapperClass\" *ngIf=\"isActive()\" @flyInOut>\n            <!-- <ng-container *ngComponentOutlet=\"TemplateComponent; ngModuleFactory: nmf;\"></ng-container> -->\n            <div class=\"ng-busy-default-wrapper\">\n                <div class=\"ng-busy-default-sign\">\n                    <div class=\"ng-busy-default-spinner\">\n                        <div class=\"bar1\"></div>\n                        <div class=\"bar2\"></div>\n                        <div class=\"bar3\"></div>\n                        <div class=\"bar4\"></div>\n                        <div class=\"bar5\"></div>\n                        <div class=\"bar6\"></div>\n                        <div class=\"bar7\"></div>\n                        <div class=\"bar8\"></div>\n                        <div class=\"bar9\"></div>\n                        <div class=\"bar10\"></div>\n                        <div class=\"bar11\"></div>\n                        <div class=\"bar12\"></div>\n                    </div>\n                    <div class=\"ng-busy-default-text\">{{message}}</div>\n                </div>\n            </div>\n        </div>\n    ",
                     animations: [
                         animations_1.trigger('flyInOut', [
                             animations_1.transition('void => *', [
@@ -88,7 +117,6 @@ var BusyComponent = /** @class */ (function () {
     /** @nocollapse */
     BusyComponent.ctorParameters = function () { return [
         { type: promise_tracker_service_1.PromiseTrackerService, },
-        { type: core_1.Compiler, },
     ]; };
     return BusyComponent;
 }());

@@ -3,11 +3,11 @@
  * @author yumao<yuzhang.lille@gmail.com>
  */
 
-import {NgModule, Compiler, COMPILER_OPTIONS, CompilerFactory} from '@angular/core';
+import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ModuleWithProviders} from '@angular/core';
-//import {JitCompilerFactory} from '@angular/compiler';
-import {JitCompilerFactory} from '@angular/platform-browser-dynamic';
+
+//import {Compiler, COMPILER_OPTIONS, CompilerFactory} from '@angular/core';
+//import {JitCompilerFactory} from '@angular/platform-browser-dynamic';
 
 import {BusyDirective} from './busy.directive';
 import {BusyService} from './busy.service';
@@ -21,9 +21,9 @@ import {BusyConfig} from './busy-config';
 //     return new JitCompilerFactory([{useDebug: false, useJit: true}]).createCompiler();
 // }
 
-export function createCompiler(compilerFactory: CompilerFactory) {
-    return compilerFactory.createCompiler();
-  }
+// export function createCompiler(compilerFactory: CompilerFactory) {
+//     return compilerFactory.createCompiler();
+//   }
 
 @NgModule({
     imports: [
@@ -36,9 +36,9 @@ export function createCompiler(compilerFactory: CompilerFactory) {
     ],
     providers: [
         BusyService,
-        {provide: COMPILER_OPTIONS, useValue: {useDebug: false, useJit: true}, multi: true},
-        {provide: CompilerFactory, useClass: JitCompilerFactory, deps: [COMPILER_OPTIONS]},
-        {provide: Compiler, useFactory: createCompiler, deps: [CompilerFactory]},
+        // {provide: COMPILER_OPTIONS, useValue: {useDebug: false, useJit: true}, multi: true},
+        // {provide: CompilerFactory, useClass: JitCompilerFactory, deps: [COMPILER_OPTIONS]},
+        // {provide: Compiler, useFactory: createCompiler, deps: [CompilerFactory]},
     ],
     exports: [BusyDirective],
     entryComponents: [

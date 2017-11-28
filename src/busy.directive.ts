@@ -51,11 +51,49 @@ export class BusyDirective implements DoCheck {
     ) {
     }
 
+    // As ngOnChanges does not work on Object detection, ngDoCheck is using
+    ngDoCheck() {
+        const options = this.optionsNorm = this.normalizeOptions(this.options);
+
+        if (!this.dectectOptionsChange()) {
+            return;
+        }
+
+        if (this.busyRef) {
+            this.busyRef.instance.message = options.message;
+        }
+
+        if (!equals(options.busy, this.tracker.promiseList))
+            this.tracker.reset({
+                promiseList: options.busy,
+                delay: options.delay,
+                minDuration: options.minDuration
+            });
+
+        if (!this.busyRef
+            || this.template !== options.template
+            || this.backdrop !== options.backdrop
+        ) {
+            this.destroyComponents();
+
+            this.template = options.template;
+            this.backdrop = options.backdrop;
+
+            if (options.backdrop)
+                this.createBackdrop();
+
+            this.createBusy();
+        }
+    }
+
+    ngOnDestroy() {
+        this.destroyComponents();
+    }
+
     private normalizeOptions(options: any) {
         if (!options) {
             options = {busy: null};
-        }
-        else if (Array.isArray(options)
+        } else if (Array.isArray(options)
             || options instanceof Promise
             || options instanceof Subscription
         ) {
@@ -77,47 +115,11 @@ export class BusyDirective implements DoCheck {
         return true;
     }
 
-    // As ngOnChanges does not work on Object detection, ngDoCheck is using
-    ngDoCheck() {
-        const options = this.optionsNorm = this.normalizeOptions(this.options);
-
-        if (!this.dectectOptionsChange()) {
-            return;
-        }
-
-        if (this.busyRef) {
-            this.busyRef.instance.message = options.message;
-        }
-
-        !equals(options.busy, this.tracker.promiseList)
-            && this.tracker.reset({
-                promiseList: options.busy,
-                delay: options.delay,
-                minDuration: options.minDuration
-            });
-
-        if (!this.busyRef
-            || this.template !== options.template
-            || this.backdrop !== options.backdrop
-        ) {
-            this.destroyComponents();
-
-            this.template = options.template;
-            this.backdrop = options.backdrop;
-
-            options.backdrop && this.createBackdrop();
-
-            this.createBusy();
-        }
-    }
-
-    ngOnDestroy() {
-        this.destroyComponents();
-    }
-
     private destroyComponents() {
-        this.busyRef && this.busyRef.destroy();
-        this.backdropRef && this.backdropRef.destroy();
+        if (this.busyRef)
+            this.busyRef.destroy();
+        if (this.backdropRef)
+            this.backdropRef.destroy();
     }
 
     private createBackdrop() {

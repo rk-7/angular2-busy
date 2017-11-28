@@ -31,7 +31,26 @@ export interface IBusyContext {
     selector: 'ng-busy',
     template: `
         <div [class]="wrapperClass" *ngIf="isActive()" @flyInOut>
-            <ng-container *ngComponentOutlet="TemplateComponent; ngModuleFactory: nmf;"></ng-container>
+            <!-- <ng-container *ngComponentOutlet="TemplateComponent; ngModuleFactory: nmf;"></ng-container> -->
+            <div class="ng-busy-default-wrapper">
+                <div class="ng-busy-default-sign">
+                    <div class="ng-busy-default-spinner">
+                        <div class="bar1"></div>
+                        <div class="bar2"></div>
+                        <div class="bar3"></div>
+                        <div class="bar4"></div>
+                        <div class="bar5"></div>
+                        <div class="bar6"></div>
+                        <div class="bar7"></div>
+                        <div class="bar8"></div>
+                        <div class="bar9"></div>
+                        <div class="bar10"></div>
+                        <div class="bar11"></div>
+                        <div class="bar12"></div>
+                    </div>
+                    <div class="ng-busy-default-text">{{message}}</div>
+                </div>
+            </div>
         </div>
     `,
     animations: [
@@ -55,8 +74,8 @@ export class BusyComponent implements DoCheck, OnDestroy {
     private lastMessage: string;
 
     constructor(
-        private tracker: PromiseTrackerService,
-        private compiler: Compiler
+        private tracker: PromiseTrackerService
+        //,private compiler: Compiler
     ) {}
 
     ngDoCheck() {
@@ -64,40 +83,40 @@ export class BusyComponent implements DoCheck, OnDestroy {
             return;
         }
         this.lastMessage = this.message;
-        this.clearDynamicTemplateCache();
-        this.createDynamicTemplate();
+        //this.clearDynamicTemplateCache();
+        //this.createDynamicTemplate();
     }
 
     ngOnDestroy(): void {
-        this.clearDynamicTemplateCache();
+        //this.clearDynamicTemplateCache();
     }
 
-    createDynamicTemplate() {
-        const {template, message} = this;
+    // createDynamicTemplate() {
+    //     const {template, message} = this;
 
-        @Component({template})
-        class TemplateComponent {
-            message: string = message;
-        }
+    //     @Component({template})
+    //     class TemplateComponent {
+    //         message: string = message;
+    //     }
 
-        @NgModule({
-            declarations: [TemplateComponent],
-            entryComponents: [TemplateComponent]
-        })
-        class TemplateModule {}
+    //     @NgModule({
+    //         declarations: [TemplateComponent],
+    //         entryComponents: [TemplateComponent]
+    //     })
+    //     class TemplateModule {}
 
-        this.TemplateComponent = TemplateComponent;
-        this.nmf = this.compiler.compileModuleSync(TemplateModule);
-    }
+    //     this.TemplateComponent = TemplateComponent;
+    //     this.nmf = this.compiler.compileModuleSync(TemplateModule);
+    // }
 
-    clearDynamicTemplateCache() {
-        if (!this.nmf) {
-            return;
-        }
+    // clearDynamicTemplateCache() {
+    //     if (!this.nmf) {
+    //         return;
+    //     }
 
-        this.compiler.clearCacheFor(this.nmf.moduleType);
-        this.nmf = null;
-    }
+    //     this.compiler.clearCacheFor(this.nmf.moduleType);
+    //     this.nmf = null;
+    // }
 
     isActive() {
         return this.tracker.isActive();
