@@ -1,10 +1,10 @@
+"use strict";
 /**
  * @file Busy Config
  * @author yumao<yuzhang.lille@gmail.com>
  */
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var BusyConfig = (function () {
+var BusyConfig = /** @class */ (function () {
     function BusyConfig(config) {
         if (config === void 0) { config = {}; }
         for (var option in exports.BUSY_CONFIG_DEFAULTS) {

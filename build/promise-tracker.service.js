@@ -1,14 +1,14 @@
+"use strict";
 /**
  * @file Service: PromiseTracker
  * @author yumao<yuzhang.lille@gmail.com>
  */
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // Inspired by angular-promise-tracker
 // Add Observable Subscription
 var core_1 = require("@angular/core");
 var Subscription_1 = require("rxjs/Subscription");
-var PromiseTrackerService = (function () {
+var PromiseTrackerService = /** @class */ (function () {
     function PromiseTrackerService() {
         this.promiseList = [];
         this.delayJustFinished = false;
@@ -76,12 +76,12 @@ var PromiseTrackerService = (function () {
         }
         return this.promiseList.length > 0;
     };
+    PromiseTrackerService.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    PromiseTrackerService.ctorParameters = function () { return []; };
     return PromiseTrackerService;
 }());
-PromiseTrackerService.decorators = [
-    { type: core_1.Injectable },
-];
-/** @nocollapse */
-PromiseTrackerService.ctorParameters = function () { return []; };
 exports.PromiseTrackerService = PromiseTrackerService;
 //# sourceMappingURL=promise-tracker.service.js.map

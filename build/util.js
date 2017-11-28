@@ -1,8 +1,8 @@
+"use strict";
 /**
  * @file Util
  * @author yumao<yuzhang.lille@gmail.com>
  */
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // from AngularJS
 function isDate(value) {
